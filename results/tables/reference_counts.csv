@@ -1,0 +1,14 @@
+"metric","value"
+"collections",341
+"participants",76
+"crohn_participants",50
+"non_ibd_participants",26
+"crohn_collections",218
+"non_ibd_collections",123
+"participants_with_repeat_collections",73
+"exact_id_pairs",279
+"documentary_collection_pairs",62
+"microbiome_genera",187
+"metabolomic_peaks",81867
+"microbiome_all_zero",2
+"metabolome_all_zero",0

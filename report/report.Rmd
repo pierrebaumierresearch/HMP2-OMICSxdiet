@@ -1,0 +1,29 @@
+---
+title: "Diet and gut profiles in Crohn's disease"
+output:
+  md_document:
+    variant: gfm
+---
+
+## Research question
+
+Is recent whole-grain consumption associated with within-person variation in gut microbial profiles in HMP2?
+
+## Data preparation
+
+The descriptive reference below uses collections with complete microbial and metabolomic profiles and recorded dietary and antibiotic responses. The primary analysis population will be specified separately.
+
+```{r, echo=FALSE}
+counts_path <- "../results/tables/reference_counts.csv"
+if (file.exists(counts_path)) {
+  summary <- read.csv(counts_path)
+  summary$metric <- gsub("_", " ", summary$metric, fixed = TRUE)
+  knitr::kable(summary, col.names = c("Metric", "Count"))
+} else {
+  cat("Run R/build_reference.R from the project root to generate the cohort counts.")
+}
+```
+
+## Analysis
+
+The statistical analysis and interpretation will be added after cohort qualification.

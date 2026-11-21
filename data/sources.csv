@@ -1,0 +1,4 @@
+file,url,sha256
+hmp2_metadata_2018-08-20.csv,https://g-227ca.190ebd.75bc.data.globus.org/ibdmdb/metadata/hmp2_metadata_2018-08-20.csv,656b7bd97660ddb875548805e30bede31f2d1208293f7170d2d5755e33862ec9
+taxonomic_profiles_3.tsv.gz,https://g-227ca.190ebd.75bc.data.globus.org/ibdmdb/products/HMP2/MGX/2018-05-04/taxonomic_profiles_3.tsv.gz,d790ff15e46d61ca0cadc55d9f918de4e3415d7f97c992ac37610aaee02117ed
+HMP2_metabolomics_w_metadata.biom.gz,https://g-227ca.190ebd.75bc.data.globus.org/ibdmdb/products/HMP2/MBX/HMP2_metabolomics_w_metadata.biom.gz,ae0eebf266ba8ec552fe148d3700c8ac9a635d5f36cade979da3f0c1cc05e0d8

@@ -1,0 +1,17 @@
+/.Rhistory
+/.RData
+/.Ruserdata
+/.Rproj.user/
+/.env
+/data/raw/
+/data/processed/
+/results/tables/*
+!/results/tables/.gitkeep
+!/results/tables/reference_counts.csv
+/results/figures/*
+!/results/figures/.gitkeep
+/report/*_files/
+/report/*_cache/
+/report/report.md
+/renv/library/
+/renv/staging/
