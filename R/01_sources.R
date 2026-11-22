@@ -28,3 +28,24 @@ verified_sources <- function(directory, download = FALSE) {
   }
   paths
 }
+
+study_inputs <- function(entry_point, args = commandArgs(trailingOnly = TRUE)) {
+  if (!identical(args, character()) && !identical(args, "--download")) {
+    stop("Usage from the project root: Rscript ", entry_point, " [--download]")
+  }
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("Missing jsonlite. Restore the project environment first.")
+  }
+  options(timeout = max(300, getOption("timeout")))
+  raw_dir <- Sys.getenv("HMP2_RAW_DIR", unset = "data/raw")
+  verified_sources(raw_dir, download = identical(args, "--download"))
+}
+
+write_output <- function(path, write_file) {
+  parent <- dirname(path)
+  dir.create(parent, recursive = TRUE, showWarnings = FALSE)
+  pending <- tempfile(".output-", tmpdir = parent)
+  on.exit(unlink(pending), add = TRUE)
+  write_file(pending)
+  if (!file.rename(pending, path)) stop("Could not save ", path)
+}

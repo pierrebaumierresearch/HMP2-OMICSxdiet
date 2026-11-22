@@ -8,6 +8,7 @@
 /results/tables/*
 !/results/tables/.gitkeep
 !/results/tables/reference_counts.csv
+!/results/tables/cohort_flow.csv
 /results/figures/*
 !/results/figures/.gitkeep
 /report/*_files/
