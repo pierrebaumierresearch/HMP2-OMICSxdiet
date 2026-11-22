@@ -1,29 +1,36 @@
 ---
-title: "Diet and gut profiles in Crohn's disease"
+title: "Assay linkage in the HMP2 stool data"
 output:
   md_document:
     variant: gfm
 ---
 
-## Research question
+## Collections and measurements
 
-Is recent whole-grain consumption associated with within-person variation in gut microbial profiles in HMP2?
+The table summarises stool collections with linked metagenomic and metabolomic measurements, consistent responses to four dietary questions and a recorded antibiotic flag. Participants can contribute multiple collections. Exact external assay identifiers and unique documentary collection matches are tabulated separately. [Data sources and linkage](../docs/DATA.md)
 
-## Data preparation
-
-The descriptive reference below uses collections with complete microbial and metabolomic profiles and recorded dietary and antibiotic responses. The primary analysis population will be specified separately.
-
-```{r, echo=FALSE}
-counts_path <- "../results/tables/reference_counts.csv"
-if (file.exists(counts_path)) {
-  summary <- read.csv(counts_path)
-  summary$metric <- gsub("_", " ", summary$metric, fixed = TRUE)
-  knitr::kable(summary, col.names = c("Metric", "Count"))
-} else {
-  cat("Run R/build_reference.R from the project root to generate the cohort counts.")
-}
+```{r reconstruction, echo=FALSE}
+counts <- read.csv("../results/tables/reference_counts.csv", stringsAsFactors = FALSE)
+labels <- c(
+  collections = "Linked collections",
+  participants = "Participants",
+  crohn_participants = "Participants with Crohn’s disease",
+  non_ibd_participants = "Participants without IBD",
+  crohn_collections = "Collections from participants with Crohn’s disease",
+  non_ibd_collections = "Collections from participants without IBD",
+  participants_with_repeat_collections = "Participants with repeated collections",
+  exact_id_pairs = "Exact external assay ID matches",
+  documentary_collection_pairs = "Unique collection-key matches",
+  microbiome_genera = "Genus-level taxonomic entries",
+  metabolomic_peaks = "Metabolomic peaks",
+  microbiome_all_zero = "All-zero microbial profiles",
+  metabolome_all_zero = "All-zero metabolomic profiles"
+)
+stopifnot(!anyDuplicated(counts$metric), setequal(counts$metric, names(labels)))
+table <- data.frame(Measure = unname(labels[counts$metric]), Count = counts$value)
+knitr::kable(table, format = "pipe")
 ```
 
-## Analysis
+## Relation to the dietary analyses
 
-The statistical analysis and interpretation will be added after cohort qualification.
+The primary analysis compares intervals within people with Crohn’s disease using metagenomes and whole-grain reports. The wider dietary analysis additionally requires complete dietary recall, and the butyrate comparison uses visits with metabolomic measurements. These eligibility rules give each analysis its own denominator. [Statistical analysis plan](../docs/HMP2-analysis-plan.md)

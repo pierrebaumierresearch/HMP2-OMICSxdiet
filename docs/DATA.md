@@ -1,11 +1,21 @@
-# HMP2 source data and reconstruction
+# Data sources and assay linkage
 
-`data/sources.csv` pins the public metadata CSV, terminal genus source and metabolomics BIOM by SHA-256. The dietary columns record recent categorical responses on cereal grains, fruit other than juice, vegetables and red meat. The primary candidate exposure is the source whole-grain field. The recorded antibiotic flag is a separate Yes/No field.
+The Inflammatory Bowel Disease Multi’omics Database (HMP2/IBDMDB) provides the stool metagenomic profiles, stool metabolomic measurements and questionnaires used in this study. The source manifest identifies each download by filename, URL and SHA-256 digest. [IBDMDB data portal](https://ibdmdb.org/results) · [Source manifest](../data/sources.csv)
 
-The reference unit is a documentary collection, keyed by participant ID, collection ID and collection interval in days. Participants contribute repeated collections. The recipe retains CD and non-IBD rows with a microbial and a metabolomic profile, four complete and agreeing food responses, and an agreeing antibiotic flag. The preferred assay link is an identical external ID. If that is absent, the documentary collection key must identify exactly one microbial profile. Twelve collections have additional microbial profiles. In those cases the shared external ID resolves the profile choice.
+| Public data product | Measurements used |
+| --- | --- |
+| `hmp2_metadata_2018-08-20.csv` | Participant and assay identifiers, diagnosis, stool receipt dates, dietary recency, medication and symptom reports |
+| `taxonomic_profiles_3.tsv.gz` | Relative abundances of the 187 taxonomic entries ending at genus rank |
+| `HMP2_metabolomics_w_metadata.biom.gz` | Processed metabolomic peak intensities and annotations, including the HILIC-negative peak annotated as butyrate (`HILn_QI36`) |
 
-The reference has 341 collections from 76 people. There are 279 matched by external ID and 62 matched only by documentary collection key. The link is a documentary record of pairing and cannot certify physical aliquot identity. It preserves 187 terminal genus relative abundances on the source scale and 81,867 processed peak intensities. The source's implicit sparse zero entries are represented as zero. Two all-zero microbial profiles are retained with explicit flags. There is no analytical filtering, imputation, feature selection or normalisation in this build.
+## Linking the assays
 
-The four-block table is a reconstruction reference. A whole-grain analysis can use a broader microbiome cohort after checking eligibility and documenting the chosen treatment of duplicate profiles, longitudinal timing and zero profiles. Metabolomic interpretation requires care when features or samples also determine the reported microbial signal.
+The reconstruction groups stool assay records by participant, collection identifier (`site_sub_coll`) and collection interval (`interval_days`). It includes collections from participants with Crohn’s disease or without IBD that contain both assays, consistent responses for four foods (whole grains, vegetables, fruit and red meat), and a consistent exported antibiotic flag. An identical external assay ID takes precedence when matching the two assays. Otherwise the collection must identify a unique metagenome. A collection-level match documents a shared collection record. Physical aliquot identity is unknown.
 
-The R reconstruction was checked against the previously generated reference on 21 November 2026. All 341 metadata rows, the ordered feature identifiers, 63,767 genus values and 27,916,647 peak intensities matched exactly. The R build and report rendering were tested in a Linux workspace using R 4.5.0. The Vector inventory reports R 4.5.3. A local reconstruction on that workstation remains to be verified.
+The resulting table contains 341 collections from 76 people. In 279 collections the assay IDs match exactly. In the other 62, the collection key identifies the pair. Of the linked collections, 218 come from 50 people with Crohn’s disease and 123 from 26 people without IBD. The genus matrix retains two all-zero profiles with explicit flags. The metabolomics matrix retains all 81,867 peaks and the implicit zeros of the sparse BIOM file. The reconstruction preserves source units. [Aggregate reconstruction counts](../results/tables/reference_counts.csv)
+
+## Analysis cohorts
+
+Each analysis starts from its relevant assay and questionnaires. The within-person genus comparison uses consecutive metagenomic sampling intervals from participants with Crohn’s disease. The wider-diet analysis requires complete answers on all 21 dietary items at both endpoints. The butyrate analysis uses metabolomic visits from participants with usable measurements in both whole-grain reporting categories. Each can therefore include visits outside the dataset linked across assays. For clinical analyses, the medication screen is also required to interpret a negative antibiotic flag. [Eligibility criteria and transformations](HMP2-analysis-plan.md)
+
+Source downloads and the generated participant-level R object are stored locally. The project entry point verifies the file hashes and writes aggregate reconstruction counts. [R entry point](../R/build_reference.R) · [Reproduction instructions](../README.md)

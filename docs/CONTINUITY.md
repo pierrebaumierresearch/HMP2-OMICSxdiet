@@ -1,7 +1,9 @@
-# Course project status
+# Analysis status
 
-The project is a standalone R collaboration for MCXA0046. Current scope is whole-grain exposure and longitudinal gut microbial variation in HMP2, with metabolomics available for context.
+| Component | Available material |
+| --- | --- |
+| Source data and assay linkage | Public source manifest, checksum verification, native R reconstruction and aggregate collection counts |
+| Dietary and microbial variables | Definitions, eligibility rules, transformations and participant counts in the statistical analysis plan |
+| Statistical analyses | The protocol specifies genus-level changes, two within-Crohn’s extensions and a participant-held-out predictive benchmark. The repository documents their design. |
 
-The data preparation entry point is `R/build_reference.R`. See `docs/DATA.md` for the input and pairing contract and `results/tables/reference_counts.csv` for the generated cohort summary.
-
-Next analysis task: use the full metagenomic source to measure support for within-person changes in whole-grain responses and identify how zero profiles, repeated collections and time intervals affect eligibility. Then agree on the microbial outcome and sensitivity analysis before fitting a model.
+The descriptive report presents assay-linkage counts. Inference on whole-grain recency and the microbiome requires the longitudinal cohorts defined in the protocol. [Data sources](DATA.md) · [Statistical analysis plan](HMP2-analysis-plan.md) · [Descriptive report source](../report/report.Rmd)
