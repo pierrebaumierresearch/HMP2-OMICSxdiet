@@ -1,0 +1,22 @@
+item,source_field
+sweetened_drinks,"Soft drinks, tea or coffee with sugar (corn syrup, maple syrup, cane sugar, etc)"
+diet_drinks,"Diet soft drinks, tea or coffee with sugar (Stevia, Equal, Splenda etc)"
+fruit_juice,"Fruit juice (orange, apple, cranberry, prune etc.)"
+water,Water
+alcohol,"Alcohol (beer, brandy, spirits, hard liquor, wine, aperitif, etc.)"
+cultured_foods,"Yogurt or other foods containing active bacterial cultures (kefir, sauerkraut)"
+dairy,"Dairy (milk, cream, ice cream, cheese, cream cheese)"
+probiotic,Probiotic
+fruit,"Fruits (no juice) (Apples, raisins, bananas, oranges, strawberries, blueberries"
+vegetables,"Vegetables (salad, tomatoes, onions, greens, carrots, peppers, green beans, etc)"
+beans,"Beans (tofu, soy, soy burgers, lentils, Mexican beans, lima beans etc)"
+whole_grains,"Whole grains (wheat, oats, brown rice, rye, quinoa, wheat bread, wheat pasta)"
+starch,"Starch (white rice, bread, pizza, potatoes, yams, cereals, pancakes, etc.)"
+eggs,Eggs
+processed_meat,"Processed meat (other red or white meat such as lunch meat, ham, salami, bologna"
+red_meat,"Red meat (beef, hamburger, pork, lamb)"
+white_meat,"White meat (chicken, turkey, etc.)"
+shellfish,"Shellfish (shrimp, lobster, scallops, etc.)"
+fish,"Fish (fish nuggets, breaded fish, fish cakes, salmon, tuna, etc.)"
+sweets,"Sweets (pies, jam, chocolate, cake, cookies, etc.)"
+unsweetened_tea_coffee,Tea or coffee no sugar and no sugar replacement

@@ -1,6 +1,6 @@
 # Read the hash-pinned sparse BIOM 1.0 source in chunks. Parsing the full JSON
 # array at once would create millions of temporary R objects.
-read_metabolomics <- function(path, ids) {
+read_metabolomics <- function(path, ids, feature_row = NULL) {
   con <- gzfile(path, "rb")
   on.exit(close(con), add = TRUE)
   chunk_size <- 4L * 1024L^2L
@@ -13,8 +13,13 @@ read_metabolomics <- function(path, ids) {
   header <- jsonlite::fromJSON(paste0(prefix, "}"), simplifyVector = FALSE)
   stopifnot(identical(header$matrix_type, "sparse"),
             identical(unlist(header$shape), c(81867L, 546L)))
+  selected_rows <- seq_len(81867L)
+  if (!is.null(feature_row)) {
+    stopifnot(is.numeric(feature_row), length(feature_row) == 1L, feature_row %in% selected_rows)
+    selected_rows <- feature_row
+  }
   # Linear index matches source order, with samples along the first dimension.
-  values <- matrix(0, nrow = 546L, ncol = 81867L)
+  values <- matrix(0, nrow = 546L, ncol = length(selected_rows))
   buffer <- substr(first, start + nchar(marker), nchar(first))
   last_position <- 0
   entries <- 0
@@ -39,7 +44,12 @@ read_metabolomics <- function(path, ids) {
               all(is.finite(intensity) & intensity >= 0))
     positions <- feature_index * 546L + sample_index + 1L
     stopifnot(positions[1L] > last_position, !is.unsorted(positions, strictly = TRUE))
-    values[positions] <- intensity
+    if (is.null(feature_row)) {
+      values[positions] <- intensity
+    } else {
+      keep <- feature_index == feature_row - 1L
+      values[sample_index[keep] + 1L, 1L] <- intensity[keep]
+    }
     last_position <- tail(positions, 1L)
     entries <- entries + length(positions)
     if (end > 0L) break
@@ -55,11 +65,12 @@ read_metabolomics <- function(path, ids) {
     suffix <- paste0(suffix, part)
   }
   metadata <- jsonlite::fromJSON(paste0(prefix, suffix))
-  stopifnot(nrow(metadata$columns) == nrow(values), nrow(metadata$rows) == ncol(values),
+  stopifnot(nrow(metadata$columns) == 546L, nrow(metadata$rows) == 81867L,
             !anyDuplicated(metadata$columns$id), !anyDuplicated(metadata$rows$id))
   selected <- match(ids, metadata$columns$id)
   stopifnot(!anyNA(selected), entries == 27348904)
   matrix <- values[selected, , drop = FALSE]
-  dimnames(matrix) <- list(ids, metadata$rows$id)
-  list(intensity = matrix, features = metadata$rows)
+  features <- metadata$rows[selected_rows, , drop = FALSE]
+  dimnames(matrix) <- list(ids, features$id)
+  list(intensity = matrix, features = features)
 }
